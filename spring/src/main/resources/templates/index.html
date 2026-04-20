@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>请登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-image: url('/images/bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .dashboard {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px 30px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .welcome {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .welcome::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #4a90e2, #63b3ed);
+            border-radius: 2px;
+        }
+
+        .user-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #4a90e2;
+        }
+
+        .user-info {
+            margin-bottom: 12px;
+            display: flex;
+        }
+
+        .user-info:last-child {
+            margin-bottom: 0;
+        }
+
+        .user-info strong {
+            color: #4a5568;
+            min-width: 60px;
+            display: inline-block;
+        }
+
+        .user-info span {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            min-width: 120px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #4a90e2, #63b3ed);
+            color: white;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #3a7bc8, #4a90e2);
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, #718096, #a0aec0);
+            color: white;
+            box-shadow: 0 4px 10px rgba(113, 128, 150, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #4a5568, #718096);
+            box-shadow: 0 6px 15px rgba(113, 128, 150, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-home {
+            background: linear-gradient(to right, #4a90e2, #63b3ed);
+            color: white;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-home:hover {
+            background: linear-gradient(to right, #3a7bc8, #4a90e2);
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: linear-gradient(to right, #e53e3e, #fc8181);
+            color: white;
+            box-shadow: 0 4px 10px rgba(229, 62, 62, 0.3);
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(to right, #c53030, #e53e3e);
+            box-shadow: 0 6px 15px rgba(229, 62, 62, 0.4);
+            transform: translateY(-2px);
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 30px 20px;
+            }
+
+            .welcome {
+                font-size: 24px;
+            }
+
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 25px 15px;
+            }
+
+            .welcome {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="dashboard">
+        <div th:if="${session.user != null}">
+            <div class="welcome">欢迎回来！</div>
+            <div class="user-card">
+                <div class="user-info">
+                    <strong>用户名：</strong><span th:text="${session.user.username}"></span>
+                </div>
+                <div class="user-info" th:if="${session.user.email}">
+                    <strong>邮箱：</strong><span th:text="${session.user.email}"></span>
+                </div>
+            </div>
+            <div class="actions">
+                <a th:href="@{/home}" class="btn btn-home">进入首页</a>
+                <a th:href="@{/logout}" class="btn btn-logout">退出登录</a>
+            </div>
+        </div>
+
+        <div th:unless="${session.user != null}">
+            <div class="welcome">欢迎访问个人内容分享系统</div>
+            <p style="color: #666; margin-bottom: 30px;">请登录或注册以继续</p>
+            <div class="actions">
+                <a th:href="@{/login}" class="btn btn-primary">立即登录</a>
+                <a th:href="@{/register}" class="btn btn-secondary">注册账户</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
