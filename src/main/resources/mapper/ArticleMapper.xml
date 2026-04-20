@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hc.spring.mapper.ArticleMapper">
+
+    <resultMap id="ArticleResultMap" type="org.hc.spring.entity.Article">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="cover_image" property="coverImage" />
+        <result column="status" property="status" />
+        <result column="view_count" property="viewCount" />
+        <result column="like_count" property="likeCount" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="username" property="username" />
+    </resultMap>
+
+    <insert id="insertArticle" parameterType="org.hc.spring.entity.Article"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO articles (user_id, title, content, cover_image)
+        VALUES (#{userId}, #{title}, #{content}, #{coverImage})
+    </insert>
+
+    <select id="selectById" parameterType="Integer" resultMap="ArticleResultMap">
+        SELECT a.*, u.username
+        FROM articles a
+                 LEFT JOIN users u ON a.user_id = u.id
+        WHERE a.id = #{id} AND a.status = 1
+    </select>
+
+    <select id="selectAll" resultMap="ArticleResultMap">
+        SELECT a.*, u.username
+        FROM articles a
+                 LEFT JOIN users u ON a.user_id = u.id
+        WHERE a.status = 1
+        ORDER BY a.created_time DESC
+    </select>
+
+    <select id="selectByUserId" parameterType="Integer" resultMap="ArticleResultMap">
+        SELECT a.*, u.username
+        FROM articles a
+                 LEFT JOIN users u ON a.user_id = u.id
+        WHERE a.user_id = #{userId} AND a.status = 1
+        ORDER BY a.created_time DESC
+    </select>
+
+    <update id="updateViewCount">
+        UPDATE articles SET view_count = view_count + 1 WHERE id = #{id}
+    </update>
+
+    <update id="updateLikeCount">
+        UPDATE articles SET like_count = like_count + #{count} WHERE id = #{id}
+    </update>
+
+    <update id="deleteArticle">
+        UPDATE articles SET status = 2 WHERE id = #{id}
+    </update>
+
+</mapper>
